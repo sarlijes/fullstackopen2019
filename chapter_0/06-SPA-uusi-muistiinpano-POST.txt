@@ -1,0 +1,20 @@
+note over selain:
+l‰hett‰misen hoitaa selaimen 
+lataamassa Javascript-tiedostossa m‰‰ritelty koodi:
+end note
+note over selain:
+selain suorittaa tapahtumank‰sittelij‰n, joka
+luo muistiinpanon, lis‰‰ sen muistiinpanojen 
+listalle komennolla notes.push(note), ja 
+l‰hett‰‰ uuden muistiinpanon palvelimelle.
+end note
+selain->palvelin: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over palvelin: 
+Palvelin vastaa kyselyyn 
+statuskoodilla 201 created
+end note
+palvelin-->selain: Content-type: application/json
+note over selain:
+selain piirt‰‰ muistiinpanojen 
+listan uudelleen 
+end note
