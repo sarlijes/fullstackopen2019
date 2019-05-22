@@ -12,9 +12,9 @@ const Otsikko = (props) => {
 const Sisalto = (props) => {
     return (
         <div>
-            <Part name={props.part1} exercise={props.exercises1} />
-            <Part name={props.part2} exercise={props.exercises2} />
-            <Part name={props.part3} exercise={props.exercises3} />
+            <Part nimi={props.osa1} harjoitus={props.tehtavia1} />
+            <Part nimi={props.osa2} harjoitus={props.tehtavia2} />
+            <Part nimi={props.osa3} harjoitus={props.tehtavia3} />
         </div>
     )
 }
@@ -32,7 +32,7 @@ const Part = (props) => {
     return (
         <div>
             <p>
-                {props.name} {props.exercise}
+                {props.nimi} {props.harjoitus}
             </p>
         </div>
     )
