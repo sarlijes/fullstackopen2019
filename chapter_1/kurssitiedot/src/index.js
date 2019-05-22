@@ -1,15 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Otsikko = (props) => {
+const Header = (props) => {
     return (
         <div>
-            <h1>{props.kurssi}</h1>
+            <h1>{props.course}</h1>
         </div>
     )
 }
 
-const Sisalto = (props) => {
+const Content = (props) => {
     return (
         <div>
             <Part nimi={props.osa1} harjoitus={props.tehtavia1} />
@@ -19,7 +19,7 @@ const Sisalto = (props) => {
     )
 }
 
-const Yhteensa = (props) => {
+const Total = (props) => {
     return (
         <div>
             <p>yht. {props.yhteensa} tehtävää
@@ -39,7 +39,7 @@ const Part = (props) => {
 }
 
 const App = () => {
-    const kurssi = 'Half Stack -sovelluskehitys'
+    const course = 'Half Stack -sovelluskehitys'
     const osa1 = 'Reactin perusteet'
     const tehtavia1 = 10
     const osa2 = 'Tiedonvälitys propseilla'
@@ -49,11 +49,15 @@ const App = () => {
     return (
 
         <div>
-            <Otsikko kurssi={kurssi} />
-            <Sisalto osa={osa1} tehtaviä={tehtavia1} />
-            <Sisalto osa={osa2} tehtaviä={tehtavia2} />
-            <Sisalto osa={osa3} tehtaviä={tehtavia3} />
-            <Yhteensa yhteensa={tehtavia1 + tehtavia2 + tehtavia3} />
+            <Header course={course} />
+             <Content osa1={osa1} tehtavia1={tehtavia1} 
+            osa2={osa2} tehtavia2 = {tehtavia2}
+            osa3={osa3} tehtavia3 = {tehtavia3}/>
+
+            {/*  Content osa={osa1} tehtavia={tehtavia1} />
+             Content osa={osa2} tehtavia={tehtavia2} />
+             Content osa={osa3} tehtavia={tehtavia3} /> */}
+            <Total yhteensa={tehtavia1 + tehtavia2 + tehtavia3} />
         </div>
     )
 }
