@@ -12,18 +12,25 @@ const Header = (props) => {
 const Content = (props) => {
     return (
         <div>
-            <Part nimi={props.osa1} harjoitus={props.tehtavia1} />
-            <Part nimi={props.osa2} harjoitus={props.tehtavia2} />
-            <Part nimi={props.osa3} harjoitus={props.tehtavia3} />
+            <Part nimi={props.parts[0].name} harjoitus={props.parts[0].exercises} />
+            <Part nimi={props.parts[1].name} harjoitus={props.parts[1].exercises} />
+            <Part nimi={props.parts[2].name} harjoitus={props.parts[2].exercises} />
         </div>
     )
 }
 
 const Total = (props) => {
+    // console.log(props)
+    // console.log(props[0])
     return (
         <div>
-            <p>yht. {props.yhteensa} tehtävää
+
+            <p>yht. {props.parts[0].exercises + props.parts[1].exercises
+            + props.parts[2].exercises} tehtävää
             </p>
+
+            {/* <p>yht. {props.total} tehtävää
+            </p> */}
         </div>
     )
 }
@@ -41,32 +48,28 @@ const Part = (props) => {
 const App = () => {
     const course = 'Half Stack -sovelluskehitys'
 
-    const part1 = {
-        name: 'Reactin perusteet',
-        exercises: 10
-    }
-    const part2 = {
-        name: 'Tiedonvälitys propseilla',
-        exercises: 7
-    }
-    const part3 = {
-        name: 'Komponenttien tila',
-        exercises: 14
-    }
+    const parts = [
+        {
+            name: 'Reactin perusteet',
+            exercises: 10
+        },
+        {
+            name: 'Tiedonvälitys propseilla',
+            exercises: 7
+        },
+        {
+            name: 'Komponenttien tila',
+            exercises: 14
+        }
+    ]
+
 
     return (
-
         <div>
             <Header course={course} />
-            <Content osa1={part1.name} tehtavia1={part1.exercises}
-                osa2={part2.name} tehtavia2={part2.exercises}
-                osa3={part1.name} tehtavia3={part3.exercises} />
-
-            {/*  Content osa={osa1} tehtavia={tehtavia1} />
-             Content osa={osa2} tehtavia={tehtavia2} />
-             Content osa={osa3} tehtavia={tehtavia3} /> */}
-            <Total yhteensa={part1.exercises + part2.exercises + part3.exercises} />
-        </div>
+            <Content parts={parts} />
+            <Total parts={parts} />
+           </div>
     )
 }
 
