@@ -9,24 +9,14 @@ const Display = (props) => {
 }
 
 const Positives = (props) => {
-    // let positivesCount = 1
-
-    // for (let i = 0; i < props.allFeedbacks.length; i++) {
-    //     if (props.allFeedbacks[i] === 1) {
-    //         positivesCount++;
-    //     }
-    // }
-
     if (props.allFeedbacks.length === 0) {
         return (
             <div>{props.label} 0.0 % </div>
         )
     }
-
     return (
-        <div> {props.label} { 100 * props.positivesCount / props.allFeedbacks.length } {"%"} </div>
+        <div> {props.label} {100 * props.positivesCount / props.allFeedbacks.length} {"%"} </div>
     )
-
 }
 
 const Average = (props) => {
@@ -47,6 +37,20 @@ const Average = (props) => {
     )
 }
 
+const Statistics = (props) => {
+    return (
+        <div>
+            <div><Display label="Good" value={props.good} /></div>
+            <div><Display label="Neutral" value={props.neutral} /> </div>
+            <div><Display label="Bad" value={props.bad} /></div>
+
+            <div><Display label="Total" value={props.allFeedbacks.length} /></div>
+            <div><Average label="Average" allFeedbacks={props.allFeedbacks} /></div>
+            <div><Positives label="Positives" allFeedbacks={props.allFeedbacks} positivesCount={props.good} /></div>
+        </div>
+    )
+}
+
 const Button = (props) => (
     <button onClick={props.handleClick}>
         {props.text}
@@ -58,6 +62,7 @@ const App = props => {
     const [neutral, setNeutral] = useState(0)
     const [bad, setBad] = useState(0)
     const [allFeedbacks, setAll] = useState([])
+    
     const setToGood = newValue => {
         setAll(allFeedbacks.concat('1'))
         setGood(newValue)
@@ -81,12 +86,7 @@ const App = props => {
                     <Button handleClick={() => setToNeutral(neutral + 1)} text="neutral" />
                     <Button handleClick={() => setToBad(bad + 1)} text="bad" />
                     <div>Statistics</div>
-                    <div><Display label="Good" value={good} /></div>
-                    <div><Display label="Neutral" value={neutral} /> </div>
-                    <div><Display label="Bad" value={bad} /></div>
-                    <div><Display label="Total" value={allFeedbacks.length} /></div>
-                    <div><Average label="Average" allFeedbacks={allFeedbacks} /></div>
-                    <div><Positives label="Positives" allFeedbacks={allFeedbacks} positivesCount={good} /></div>
+                    <div><Statistics good={good} neutral={neutral} bad={bad} allFeedbacks={allFeedbacks} /> </div>
                 </header>
             </div>
         </div>
