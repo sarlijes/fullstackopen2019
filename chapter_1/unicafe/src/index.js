@@ -4,7 +4,10 @@ import './App.css';
 
 const Display = (props) => {
     return (
-        <div>{props.label}: {props.value}</div>
+        <tr>
+            <td>{props.label}:</td>
+            <td>{props.value}</td>
+        </tr>
     )
 }
 
@@ -23,23 +26,22 @@ const Statistics = (props) => {
 
     let positives = 100 * props.positive / props.allFeedbacks.length + " %"
     return (
-        <div>
+        <table>
             <Statistic label="Good" value={props.positive} />
-            <Statistic label="Neutral" value={props.neutral} /> 
+            <Statistic label="Neutral" value={props.neutral} />
             <Statistic label="Bad" value={props.negative} />
             <Statistic label="Total" value={props.allFeedbacks.length} />
             <Statistic label="Average" value={average} />
-            <Statistic label="Positives" value={positives} /> 
-        </div>
+            <Statistic label="Positives" value={positives} />
+        </table>
     )
 }
 
 const Statistic = (props) => {
     return (
-        <Display label={props.label} value={props.value}/>
+        <Display label={props.label} value={props.value} />
     )
 }
-
 
 const Button = (props) => (
     <button onClick={props.handleClick}>
