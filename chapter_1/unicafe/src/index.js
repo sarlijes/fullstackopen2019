@@ -8,32 +8,6 @@ const Display = (props) => {
     )
 }
 
-const Positives = (props) => {
-    if (props.allFeedbacks.length === 0) {
-        return (
-            <div>{props.label} 0.0 % </div>
-        )
-    }
-    return (
-        <div> {props.label} {100 * props.positivesCount / props.allFeedbacks.length} {"%"} </div>
-    )
-}
-
-const Average = (props) => {
-    let sum = 0
-    props.allFeedbacks.forEach(value => {
-        sum = sum + parseInt(value, 10)
-    })
-    if (props.allFeedbacks.length === 0) {
-        return (
-            <div>{props.label} 0.0 </div>
-        )
-    }
-    return (
-        <div> {props.label} {sum / props.allFeedbacks.length} </div>
-    )
-}
-
 const Statistics = (props) => {
 
     if (props.allFeedbacks.length === 0) {
@@ -41,22 +15,28 @@ const Statistics = (props) => {
             <div>No feedback given</div>
         )
     }
+    let sum = 0.0
+    props.allFeedbacks.forEach(value => {
+        sum = sum + parseInt(value, 10)
+    })
+    let average = sum / props.allFeedbacks.length
 
+    let positives = 100 * props.positive / props.allFeedbacks.length + " %"
     return (
         <div>
             <Statistic label="Good" value={props.positive} />
             <Statistic label="Neutral" value={props.neutral} /> 
             <Statistic label="Bad" value={props.negative} />
             <Statistic label="Total" value={props.allFeedbacks.length} />
-            <Average label="Average" allFeedbacks={props.allFeedbacks} />
-            <Positives label="Positives" allFeedbacks={props.allFeedbacks} positivesCount={props.positive} />
+            <Statistic label="Average" value={average} />
+            <Statistic label="Positives" value={positives} /> 
         </div>
     )
 }
 
 const Statistic = (props) => {
     return (
-        <div><Display label={props.label} value={props.value}/></div>
+        <Display label={props.label} value={props.value}/>
     )
 }
 
@@ -96,11 +76,10 @@ const App = props => {
                     <Button handleClick={() => setToNeutral(neutral + 1)} text="neutral" />
                     <Button handleClick={() => setToBad(negative + 1)} text="negative" />
                     <h1>Statistics</h1>
-                    <div><Statistics positive={positive} neutral={neutral} negative={negative} allFeedbacks={allFeedbacks} /> </div>
+                    <Statistics positive={positive} neutral={neutral} negative={negative} allFeedbacks={allFeedbacks} />
                 </header>
             </div>
         </div>
     )
 }
 ReactDOM.render(<App />, document.getElementById('root'))
-
