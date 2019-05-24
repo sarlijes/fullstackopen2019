@@ -4,7 +4,8 @@ import './index.css';
 
 const App = (props) => {
     const [selected, setSelected] = useState(0)
-    const [points, setAll] = useState([].Array.apply(null, Array(6)).map(Number.prototype.valueOf, 0))
+    const [mostVotedAnecdoteIndex, setMostVotedAnecdoteIndex] = useState(0)
+    const [points, setAll] = useState(Array.apply(null, Array(6)).map(Number.prototype.valueOf, 0))
 
     const handleVote = selected => {
         const copy = [...points]
@@ -12,13 +13,28 @@ const App = (props) => {
         setAll(copy)
     }
 
+    const setMostVoted = (i) => {
+        return () => {
+            setMostVotedAnecdoteIndex(i)
+        }
+    }
+
+    for (let i = 0; i < points.length; i++) {
+        if (points[i] > points[mostVotedAnecdoteIndex]) {
+            setMostVoted(i)()
+        }
+    }
+
     return (
         <div>
             <div className="App">
                 <header className="App-header">
+                    <h1>Anecdote of the day</h1>
                     <Display anecdote={props.anecdotes[selected]} votes={points[selected]} />
                     <Button handleClick={() => handleVote(selected)} text="Vote" />
                     <Button handleClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))} text="Next one" />
+                    <h1>Anecdote with the most votes:</h1>
+                    {props.anecdotes[mostVotedAnecdoteIndex]}
                 </header>
             </div>
         </div>
@@ -37,8 +53,6 @@ const anecdotes = [
     'Premature optimization is the root of all evil.',
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
-
-// let points = Array.apply(null, Array(6)).map(Number.prototype.valueOf, 0);
 
 const Display = (props) => {
     return (
