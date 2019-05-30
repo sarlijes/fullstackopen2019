@@ -14,20 +14,32 @@ const App = () => {
 
   const rows = () => persons.map(person =>
     <Person
-      key={person.name}
+      key={person.id}
       person={person}
     />
   )
 
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName,
-      id: persons.length + 1,
+    let nameFound = false
+
+    persons.forEach(function (el) {
+      if (el.name === newName) {
+        nameFound = true;
+      }
+    });
+
+    if (!nameFound) {
+      const personObject = {
+        name: newName,
+        id: persons.length + 1,
+      }
+      setPersons(persons.concat(personObject))
+      setNewName('')
+    } else {
+      window.alert(`${newName} on jo luettelossa`);
     }
 
-    setPersons(persons.concat(personObject))
-    setNewName('')
   }
 
   const handlePersonChange = (event) => {
@@ -39,7 +51,7 @@ const App = () => {
       <header className="App-header">
         <h1>Puhelinluettelo
           </h1>
-      <form onSubmit={addPerson}>
+        <form onSubmit={addPerson}>
           <div>
             <input
               value={newName}
