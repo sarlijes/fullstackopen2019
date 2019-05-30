@@ -2,19 +2,23 @@ import React, { useState } from 'react'
 
 const Person = ({ person }) => {
   return (
-    <li>{person.name}</li>
+    <li>{person.name}: {person.number}</li>
   )
 }
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Nimi 1', id: 1 }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Martti Tienari', number: '040-123456' },
+    { name: 'Arto Järvinen', number: '040-123456' },
+    { name: 'Lea Kutvonen', number: '040-123456' }
   ])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   const rows = () => persons.map(person =>
     <Person
-      key={person.id}
+      key={person.name}
       person={person}
     />
   )
@@ -32,6 +36,7 @@ const App = () => {
     if (!nameFound) {
       const personObject = {
         name: newName,
+        number: newNumber,
         id: persons.length + 1,
       }
       setPersons(persons.concat(personObject))
@@ -45,6 +50,9 @@ const App = () => {
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
   }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
 
   return (
     <div className="App">
@@ -52,10 +60,14 @@ const App = () => {
         <h1>Puhelinluettelo
           </h1>
         <form onSubmit={addPerson}>
-          <div>
+          <div> Nimi:
             <input
               value={newName}
               onChange={handlePersonChange}
+            /> Numero:
+            <input
+              value={newNumber}
+              onChange={handleNumberChange}
             />
             <button type="submit">lisää</button>
           </div>
