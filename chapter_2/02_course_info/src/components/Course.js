@@ -3,6 +3,7 @@ import React from 'react'
 const Header = props =>
     <h1>{props.name}</h1>
 
+    // count the total of each course's assignments
 const Total = props => {
     const numbers = [];
     props.parts.map(part => numbers.push(part.exercises))
@@ -10,7 +11,7 @@ const Total = props => {
     const total = numbers.reduce(reducer);
     return <p>yhteensä {total} tehtävää</p>
 }
-
+// render the course
 const Course = ({ course }) => {
     return (
         <div>
@@ -22,9 +23,9 @@ const Course = ({ course }) => {
         </div>
     )
 }
-
+// render the rows
 const Row = (course) => course.parts.map(part =>
-    <div>{part.name}, {part.exercises}</div>
+    <div key={part.id}> {part.name}, {part.exercises}</div>
 )
 
 export default Course
