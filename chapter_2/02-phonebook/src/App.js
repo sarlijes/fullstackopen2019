@@ -6,12 +6,58 @@ const Person = ({ person }) => {
   )
 }
 
-  const fullPersonList = [
-    { name: 'Dan Murray', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]
+const AddPersonForm = ({ addPerson, newName, handlePersonChange, newNumber, handleNumberChange }) => {
+  return (
+    <div>
+
+      <form onSubmit={addPerson}>
+        <div> Nimi:
+            <input
+            value={newName}
+            onChange={handlePersonChange}
+          /> Numero:
+            <input
+            value={newNumber}
+            onChange={handleNumberChange}
+          />
+          <button type="submit">lisää</button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
+const fullPersonList = [
+  { name: 'Dan Murray', number: '040-123456' },
+  { name: 'Ada Lovelace', number: '39-44-5323523' },
+  { name: 'Dan Abramov', number: '12-43-234345' },
+  { name: 'Mary Poppendieck', number: '39-23-6423122' }
+]
+
+const Phonebook = ({ persons }) => {
+  return (
+    <ul>
+      {persons.map(person =>
+        <Person key={person.name} person={person} />
+      )}
+    </ul>
+  )
+}
+const Filter = ({ showPeopleBySearchTerm, searchTerm, handleSearchTermChange }) => {
+
+  
+  return (
+    <form onSubmit={showPeopleBySearchTerm}>
+      <div> Hae henkilöä
+      <input
+          value={searchTerm}
+          onChange={handleSearchTermChange}
+        />
+        <button type="submit">hae</button>
+      </div>
+    </form>
+  )
+}
 
 const App = () => {
   const [persons, setPersons] = useState(fullPersonList)
@@ -19,9 +65,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
 
-  const rows = () => persons.map(person =>
-    <Person key={person.name} person={person} />
-  )
+
 
   const showPeopleBySearchTerm = (event) => {
     event.preventDefault()
@@ -74,37 +118,23 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Puhelinluettelo
-          </h1>
+        <h1>Puhelinluettelo</h1>
 
-        <form onSubmit={showPeopleBySearchTerm}>
-          <div> Hae henkilöä
-            <input
-              value={searchTerm}
-              onChange={handleSearchTermChange}
-            />
-            <button type="submit">hae</button>
-          </div>
-        </form>
+        <Filter showPeopleBySearchTerm={showPeopleBySearchTerm}
+          searchTerm={searchTerm}
+          handleSearchTermChange={handleSearchTermChange} />
 
         <h2>Lisää uusi</h2>
-        <form onSubmit={addPerson}>
-          <div> Nimi:
-            <input
-              value={newName}
-              onChange={handlePersonChange}
-            /> Numero:
-            <input
-              value={newNumber}
-              onChange={handleNumberChange}
-            />
-            <button type="submit">lisää</button>
-          </div>
-        </form>
+
+        <AddPersonForm addPerson={addPerson}
+          newName={newName}
+          handlePersonChange={handlePersonChange}
+          newNumber={newNumber}
+          handleNumberChange={handleNumberChange} />
+
         <h2>Numerot</h2>
-        <ul>
-          {rows()}
-        </ul>
+        <Phonebook persons={persons} />
+
       </header>
     </div>
   )
