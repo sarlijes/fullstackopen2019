@@ -6,22 +6,36 @@ const Person = ({ person }) => {
   )
 }
 
+  const fullPersonList = [
+    { name: 'Dan Murray', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ]
+
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Martti Tienari', number: '040-123456' },
-    { name: 'Arto Järvinen', number: '040-123456' },
-    { name: 'Lea Kutvonen', number: '040-123456' }
-  ])
+  const [persons, setPersons] = useState(fullPersonList)
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [searchTerm, setSearchTerm] = useState('')
 
   const rows = () => persons.map(person =>
-    <Person
-      key={person.name}
-      person={person}
-    />
+    <Person key={person.name} person={person} />
   )
+
+  const showPeopleBySearchTerm = (event) => {
+    event.preventDefault()
+    const filteredList = []
+    persons.forEach(function (el) {
+      if (el.name.startsWith(searchTerm)) {
+        filteredList.push(el)
+        setPersons(filteredList)
+      }
+    });
+    if (searchTerm === "") {
+      setPersons(fullPersonList)
+    }
+  }
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -41,10 +55,10 @@ const App = () => {
       }
       setPersons(persons.concat(personObject))
       setNewName('')
+      setNewNumber('')
     } else {
       window.alert(`${newName} on jo luettelossa`);
     }
-
   }
 
   const handlePersonChange = (event) => {
@@ -53,12 +67,27 @@ const App = () => {
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
   }
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value)
+  }
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Puhelinluettelo
           </h1>
+
+        <form onSubmit={showPeopleBySearchTerm}>
+          <div> Hae henkilöä
+            <input
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+            />
+            <button type="submit">hae</button>
+          </div>
+        </form>
+
+        <h2>Lisää uusi</h2>
         <form onSubmit={addPerson}>
           <div> Nimi:
             <input
