@@ -34,18 +34,21 @@ const fullPersonList = [
   { name: 'Mary Poppendieck', number: '39-23-6423122' }
 ]
 
-const Phonebook = ({ persons }) => {
+const Phonebook = ({ filteredList }) => {
+
   return (
     <ul>
-      {persons.map(person =>
+      {filteredList.map(person =>
         <Person key={person.name} person={person} />
       )}
     </ul>
   )
 }
-const Filter = ({ showPeopleBySearchTerm, searchTerm, handleSearchTermChange }) => {
+const Filter = ({ showPeopleBySearchTerm, searchTerm, handleSearchTermChange, setFilteredList, persons }) => {
+  if (searchTerm === "") {
+    setFilteredList(persons)
+  }
 
-  
   return (
     <form onSubmit={showPeopleBySearchTerm}>
       <div> Hae henkilöä
@@ -64,20 +67,19 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-
-
+  const [filteredList, setFilteredList] = useState([])
 
   const showPeopleBySearchTerm = (event) => {
     event.preventDefault()
-    const filteredList = []
+    let matchingPersonsList = []
     persons.forEach(function (el) {
       if (el.name.startsWith(searchTerm)) {
-        filteredList.push(el)
-        setPersons(filteredList)
+        matchingPersonsList.push(el)
+        setFilteredList(matchingPersonsList)
       }
     });
     if (searchTerm === "") {
-      setPersons(fullPersonList)
+      setFilteredList(persons)
     }
   }
 
@@ -122,7 +124,9 @@ const App = () => {
 
         <Filter showPeopleBySearchTerm={showPeopleBySearchTerm}
           searchTerm={searchTerm}
-          handleSearchTermChange={handleSearchTermChange} />
+          handleSearchTermChange={handleSearchTermChange}
+          setFilteredList={setFilteredList}
+          persons={persons} />
 
         <h2>Lisää uusi</h2>
 
@@ -133,7 +137,7 @@ const App = () => {
           handleNumberChange={handleNumberChange} />
 
         <h2>Numerot</h2>
-        <Phonebook persons={persons} />
+        <Phonebook filteredList={filteredList} />
 
       </header>
     </div>
