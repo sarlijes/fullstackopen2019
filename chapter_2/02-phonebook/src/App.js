@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Person = ({ person }) => {
   return (
@@ -27,30 +28,22 @@ const AddPersonForm = ({ addPerson, newName, handlePersonChange, newNumber, hand
   )
 }
 
-const fullPersonList = [
-  { name: 'Dan Murray', number: '040-123456' },
-  { name: 'Ada Lovelace', number: '39-44-5323523' },
-  { name: 'Dan Abramov', number: '12-43-234345' },
-  { name: 'Mary Poppendieck', number: '39-23-6423122' }
-]
-
 const Phonebook = ({ filteredList }) => {
-
   return (
-    <ul>
+    <>
       {filteredList.map(person =>
         <Person key={person.name} person={person} />
       )}
-    </ul>
+    </>
   )
 }
-const Filter = ({ showPeopleBySearchTerm, searchTerm, handleSearchTermChange, setFilteredList, persons }) => {
+const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange, setFilteredList, persons }) => {
   if (searchTerm === "") {
     setFilteredList(persons)
   }
 
   return (
-    <form onSubmit={showPeopleBySearchTerm}>
+    <form onSubmit={setFilteredListBySearchTerm}>
       <div> Hae henkilöä
       <input
           value={searchTerm}
@@ -63,17 +56,38 @@ const Filter = ({ showPeopleBySearchTerm, searchTerm, handleSearchTermChange, se
 }
 
 const App = () => {
-  const [persons, setPersons] = useState(fullPersonList)
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredList, setFilteredList] = useState([])
 
-  const showPeopleBySearchTerm = (event) => {
+  // const promise = axios.get('http://localhost:3001/persons')
+  // console.log(promise)
+
+  const promise = axios.get('http://localhost:3001/persons')
+
+  promise.then(response => {
+    console.log(response)
+  })
+
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/persons")
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
+
+
+  const setFilteredListBySearchTerm = (event) => {
     event.preventDefault()
     let matchingPersonsList = []
     persons.forEach(function (el) {
-      if (el.name.startsWith(searchTerm)) {
+      let nameLowerCase = el.name.toLowerCase()
+      let searchTermLowerCase = searchTerm.toLowerCase()
+      if (nameLowerCase.startsWith(searchTermLowerCase)) {
         matchingPersonsList.push(el)
         setFilteredList(matchingPersonsList)
       }
@@ -82,6 +96,7 @@ const App = () => {
       setFilteredList(persons)
     }
   }
+
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -122,7 +137,7 @@ const App = () => {
       <header className="App-header">
         <h1>Puhelinluettelo</h1>
 
-        <Filter showPeopleBySearchTerm={showPeopleBySearchTerm}
+        <Filter setFilteredListBySearchTerm={setFilteredListBySearchTerm}
           searchTerm={searchTerm}
           handleSearchTermChange={handleSearchTermChange}
           setFilteredList={setFilteredList}
