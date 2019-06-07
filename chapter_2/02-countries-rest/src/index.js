@@ -19,7 +19,7 @@ const Language = ({ language }) => {
         <ul>{language.name}</ul>
     )
 }
-const CountrySpecs = ({ country }) => {
+const CountrySpecs = ({ country, capitalWeather, setCapitalWeather }) => {
     return (
         <>
             <h1>{country.name}</h1>
@@ -32,21 +32,47 @@ const CountrySpecs = ({ country }) => {
             <img
                 src={country.flag}
                 alt="flag of this country"
-                style={{ width: 200, position: 'absolute' }} />
+                style={{ width: 200 }} />
+
+            <Weather key={country.capital} capital={country.capital} capitalWeather={capitalWeather} setCapitalWeather={setCapitalWeather} />
         </>
     )
 }
 
-const Countries = ({ filteredList, setFilteredList }) => {
+const Weather = ({ capital, capitalWeather, setCapitalWeather }) => {
+
+    useEffect(() => {
+        axios
+            .get('http://api.apixu.com/v1/current.json?key=7a1ec02eb69b4671aa992918190706&q=' + capital)
+            .then(response => {
+                setCapitalWeather(response.data.current)
+            })
+    }, [])
+
+        return (
+            <>
+                <h1> Weather in {capital}</h1>
+                <div>Temperature: {capitalWeather.temp_c}</div>
+                { capitalWeather.condition && <img src={capitalWeather.condition.icon} /> }
+                <div>Wind: {capitalWeather.wind_kph} kph {capitalWeather.wind_dir}   </div>
+                 
+            </>
+        )
+}
+
+const Countries = ({ filteredList, setFilteredList, capitalWeather, setCapitalWeather }) => {
     if (filteredList.length > 10) {
         return (
             <div> Too many matches </div>
         )
     } else if (filteredList.length === 1) {
+
+
+
         return (
             <>
                 {filteredList.map(country =>
-                    <CountrySpecs key={country.name} country={country} />
+                    <CountrySpecs key={country.name} country={country} capitalWeather={capitalWeather} setCapitalWeather={setCapitalWeather} />
                 )}
             </>
         )
@@ -61,10 +87,14 @@ const Countries = ({ filteredList, setFilteredList }) => {
     }
 }
 
-const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange }) => {
+const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange,
+    setFilteredList, countryData, filteredList }) => {
+    if (searchTerm === "") {
+        setFilteredList(countryData)
+    }
     return (
         <form onSubmit={setFilteredListBySearchTerm}>
-                find countries
+            find countries
                <input value={searchTerm} onChange={handleSearchTermChange} />
         </form>
     )
@@ -74,6 +104,9 @@ const App = () => {
     const [countryData, setCountryData] = useState([])
     const [searchTerm, setSearchTerm] = useState('')
     const [filteredList, setFilteredList] = useState([])
+    const [capitalWeather, setCapitalWeather] = useState([])
+
+    
 
     useEffect(() => {
         axios
@@ -107,9 +140,13 @@ const App = () => {
         <div>
             <Filter setFilteredListBySearchTerm={setFilteredListBySearchTerm}
                 searchTerm={searchTerm}
+                handleSearchTermChange={handleSearchTermChange}
+                setFilteredList={setFilteredList}
+                countryData={countryData}
+                filteredList={filteredList}
                 handleSearchTermChange={handleSearchTermChange} />
-                
-            <Countries filteredList={filteredList} setFilteredList={setFilteredList} />
+
+            <Countries filteredList={filteredList} setFilteredList={setFilteredList} capitalWeather={capitalWeather} setCapitalWeather={setCapitalWeather} />
         </div>
     )
 }
