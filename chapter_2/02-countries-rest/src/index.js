@@ -2,9 +2,14 @@ import ReactDOM from 'react-dom'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Country = ({ country }) => {
+const CountryRow = ({ country, setFilteredList, filteredList }) => {
+    const handleCountryButtonPress = (event) => {
+        setFilteredList([].concat(country))
+    }
     return (
-        <div>{country.name}</div>
+            <div>{country.name}
+                <button onClick={handleCountryButtonPress}>show info</button>
+            </div>
     )
 }
 const Language = ({ language }) => {
@@ -20,20 +25,20 @@ const CountrySpecs = ({ country }) => {
             <div>Population: {country.population}</div>
             <h2>Languages: </h2>
             {country.languages.map(language =>
-               <Language key={language.name} language={language} />
+                <Language key={language.name} language={language} />
             )}
-         <img 
-            src={country.flag}
-            alt="flag of this country"
-            style={{ width: 200, position: 'absolute'}} />
+            <img
+                src={country.flag}
+                alt="flag of this country"
+                style={{ width: 200, position: 'absolute' }} />
         </>
     )
 }
 
-const Countries = ({ filteredList }) => {
+const Countries = ({ filteredList, setFilteredList }) => {
     if (filteredList.length > 10) {
         return (
-            <div> Too many matches, please specify the filter </div>
+            <div> Too many matches </div>
         )
     } else if (filteredList.length === 1) {
         return (
@@ -44,13 +49,15 @@ const Countries = ({ filteredList }) => {
             </>
         )
     } else {
+        console.log('---------------- filteredList nyt', filteredList)
         return (
             <>
                 {filteredList.map(country =>
-                    <Country key={country.name} country={country} />
+                    <CountryRow key={country.name} country={country} setFilteredList={setFilteredList} filteredList={filteredList} />
                 )}
             </>
         )
+
     }
 
 }
@@ -113,7 +120,7 @@ const App = () => {
                 setFilteredList={setFilteredList}
                 countryData={countryData}
                 filteredList={filteredList} />
-            <Countries filteredList={filteredList} />
+            <Countries filteredList={filteredList} setFilteredList={setFilteredList} />
         </div>
     )
 }
