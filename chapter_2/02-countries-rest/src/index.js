@@ -2,16 +2,18 @@ import ReactDOM from 'react-dom'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const CountryRow = ({ country, setFilteredList, filteredList }) => {
-    const handleCountryButtonPress = (event) => {
+const CountryRow = ({ country, setFilteredList }) => {
+    const handleCountryButtonPress = () => {
         setFilteredList([].concat(country))
     }
     return (
-            <div>{country.name}
-                <button onClick={handleCountryButtonPress}>show info</button>
-            </div>
+        <div>
+            {country.name}
+            <button onClick={handleCountryButtonPress}>show info</button>
+        </div>
     )
 }
+
 const Language = ({ language }) => {
     return (
         <ul>{language.name}</ul>
@@ -49,7 +51,6 @@ const Countries = ({ filteredList, setFilteredList }) => {
             </>
         )
     } else {
-        console.log('---------------- filteredList nyt', filteredList)
         return (
             <>
                 {filteredList.map(country =>
@@ -57,24 +58,14 @@ const Countries = ({ filteredList, setFilteredList }) => {
                 )}
             </>
         )
-
     }
-
 }
 
-const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange,
-    setFilteredList, countryData, filteredList }) => {
-    if (searchTerm === "") {
-        setFilteredList(countryData)
-    }
-
-
+const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange }) => {
     return (
         <form onSubmit={setFilteredListBySearchTerm}>
-            <div> find countries
+                find countries
                <input value={searchTerm} onChange={handleSearchTermChange} />
-                {/* <button type="submit">hae</button> */}
-            </div>
         </form>
     )
 }
@@ -116,10 +107,8 @@ const App = () => {
         <div>
             <Filter setFilteredListBySearchTerm={setFilteredListBySearchTerm}
                 searchTerm={searchTerm}
-                handleSearchTermChange={handleSearchTermChange}
-                setFilteredList={setFilteredList}
-                countryData={countryData}
-                filteredList={filteredList} />
+                handleSearchTermChange={handleSearchTermChange} />
+                
             <Countries filteredList={filteredList} setFilteredList={setFilteredList} />
         </div>
     )
