@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
+
 
 const Person = ({ person }) => {
   return (
@@ -62,24 +64,13 @@ const App = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredList, setFilteredList] = useState([])
 
-  // const promise = axios.get('http://localhost:3001/persons')
-  // console.log(promise)
-
-  const promise = axios.get('http://localhost:3001/persons')
-
-  promise.then(response => {
-    console.log(response)
-  })
-
-
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
       })
   }, [])
-
 
   const setFilteredListBySearchTerm = (event) => {
     event.preventDefault()
@@ -97,7 +88,6 @@ const App = () => {
     }
   }
 
-
   const addPerson = (event) => {
     event.preventDefault()
     let nameFound = false
@@ -113,17 +103,14 @@ const App = () => {
         name: newName,
         number: newNumber
       }
-      // setPersons(persons.concat(personObject))
-      // setNewName('')
-      // setNewNumber('')
 
-      axios
-      .post('http://localhost:3001/persons', personObject)
-      .then(response => {
-        setPersons(persons.concat(response.data))
-        setNewName('')
-        setNewNumber('')
-      })
+      personService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
 
     } else {
       window.alert(`${newName} on jo luettelossa`);
