@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
 
-
 const Person = ({ person, handleDeleteButtonPress }) => {
   return (
     <li>{person.name}: {person.number} <button onClick={handleDeleteButtonPress}>delete</button></li>
@@ -11,18 +10,17 @@ const Person = ({ person, handleDeleteButtonPress }) => {
 const AddPersonForm = ({ addPerson, newName, handlePersonChange, newNumber, handleNumberChange }) => {
   return (
     <div>
-
       <form onSubmit={addPerson}>
-        <div> Nimi:
+        <div> Name:
             <input
             value={newName}
             onChange={handlePersonChange}
-          /> Numero:
+          /> Number:
             <input
             value={newNumber}
             onChange={handleNumberChange}
           />
-          <button type="submit">lisää</button>
+          <button type="submit">add</button>
         </div>
       </form>
     </div>
@@ -33,8 +31,9 @@ const Phonebook = ({ filteredList, handleDeleteButtonPress }) => {
   return (
     <>
       {filteredList.map(person =>
-        <Person key={person.name} person={person} handleDeleteButtonPress={() => handleDeleteButtonPress(person.id)} />
-      )}
+        <Person key={person.id} person={person} handleDeleteButtonPress={() => handleDeleteButtonPress(person.id)} />
+      )
+      }
     </>
   )
 }
@@ -46,12 +45,12 @@ const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChang
 
   return (
     <form onSubmit={setFilteredListBySearchTerm}>
-      <div> Hae henkilöä
+      <div> Search
       <input
           value={searchTerm}
           onChange={handleSearchTermChange}
         />
-        <button type="submit">hae</button>
+        <button type="submit">go</button>
       </div>
     </form>
   )
@@ -113,13 +112,29 @@ const App = () => {
         })
 
     } else {
-      window.alert(`${newName} on jo luettelossa`);
+      if (window.confirm(`${newName} already listed, replace the number?`)) {
+        const person = persons.find(p => p.name === newName)
+        const newPerson = person
+        newPerson.number = newNumber
+        personService.update(person.id, newPerson)
+        setNewName('')
+        setNewNumber('')
+      }
     }
   }
 
+
+
   const handleDeleteButtonPress = id => {
-    // const person = persons.find(p => p.id === id)
-    personService.deletePerson(id)
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`Please confirm the removal of ${person.name} from the phonebook`)) {
+      personService
+        .deletePerson(person.id)
+        .then(filter => {
+          setPersons(persons.filter(p => p.id !== id))
+        })
+    }
+
   }
 
   const handlePersonChange = (event) => {
@@ -135,7 +150,7 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Puhelinluettelo</h1>
+        <h1>Phonebook</h1>
 
         <Filter setFilteredListBySearchTerm={setFilteredListBySearchTerm}
           searchTerm={searchTerm}
@@ -143,7 +158,7 @@ const App = () => {
           setFilteredList={setFilteredList}
           persons={persons} />
 
-        <h2>Lisää uusi</h2>
+        <h2>Add new</h2>
 
         <AddPersonForm addPerson={addPerson}
           newName={newName}
@@ -151,8 +166,8 @@ const App = () => {
           newNumber={newNumber}
           handleNumberChange={handleNumberChange} />
 
-        <h2>Numerot</h2>
-        <Phonebook filteredList={filteredList} handleDeleteButtonPress={() => handleDeleteButtonPress()}/>
+        <h2>Contacts</h2>
+        <Phonebook filteredList={filteredList} handleDeleteButtonPress={handleDeleteButtonPress} />
 
       </header>
     </div>
