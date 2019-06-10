@@ -111,12 +111,20 @@ const App = () => {
     if (!nameFound) {
       const personObject = {
         name: newName,
-        number: newNumber,
-        id: persons.length + 1,
+        number: newNumber
       }
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewNumber('')
+      // setPersons(persons.concat(personObject))
+      // setNewName('')
+      // setNewNumber('')
+
+      axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        setPersons(persons.concat(response.data))
+        setNewName('')
+        setNewNumber('')
+      })
+
     } else {
       window.alert(`${newName} on jo luettelossa`);
     }
