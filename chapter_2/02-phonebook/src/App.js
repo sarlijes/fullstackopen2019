@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
 
 
-const Person = ({ person }) => {
+const Person = ({ person, handleDeleteButtonPress }) => {
   return (
-    <li>{person.name}: {person.number}</li>
+    <li>{person.name}: {person.number} <button onClick={handleDeleteButtonPress}>delete</button></li>
   )
 }
 
@@ -30,15 +29,16 @@ const AddPersonForm = ({ addPerson, newName, handlePersonChange, newNumber, hand
   )
 }
 
-const Phonebook = ({ filteredList }) => {
+const Phonebook = ({ filteredList, handleDeleteButtonPress }) => {
   return (
     <>
       {filteredList.map(person =>
-        <Person key={person.name} person={person} />
+        <Person key={person.name} person={person} handleDeleteButtonPress={() => handleDeleteButtonPress(person.id)} />
       )}
     </>
   )
 }
+
 const Filter = ({ setFilteredListBySearchTerm, searchTerm, handleSearchTermChange, setFilteredList, persons }) => {
   if (searchTerm === "") {
     setFilteredList(persons)
@@ -117,6 +117,11 @@ const App = () => {
     }
   }
 
+  const handleDeleteButtonPress = id => {
+    // const person = persons.find(p => p.id === id)
+    personService.deletePerson(id)
+  }
+
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
   }
@@ -147,7 +152,7 @@ const App = () => {
           handleNumberChange={handleNumberChange} />
 
         <h2>Numerot</h2>
-        <Phonebook filteredList={filteredList} />
+        <Phonebook filteredList={filteredList} handleDeleteButtonPress={() => handleDeleteButtonPress()}/>
 
       </header>
     </div>
