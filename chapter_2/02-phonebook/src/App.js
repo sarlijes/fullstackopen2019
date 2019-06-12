@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import personService from './services/persons'
 
+const Notification = ({ message }) => {
+  if (message === undefined) {
+    return null
+  }
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
+
 const Person = ({ person, handleDeleteButtonPress }) => {
   return (
     <li>{person.name}: {person.number} <button onClick={handleDeleteButtonPress}>delete</button></li>
@@ -62,6 +73,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
   const [filteredList, setFilteredList] = useState([])
+  const [statusMessage, setStatusMessage] = useState()
 
   useEffect(() => {
     personService
@@ -87,7 +99,15 @@ const App = () => {
     }
   }
 
+  const changeNotification = (message) => {
+    setStatusMessage(message)
+    setTimeout(() => {
+      setStatusMessage(undefined)
+    }, 3000)
+  }
+
   const addPerson = (event) => {
+    
     event.preventDefault()
     let nameFound = false
 
@@ -109,32 +129,33 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          changeNotification(`Added ${newName}`)
         })
 
     } else {
-      if (window.confirm(`${newName} already listed, replace the number?`)) {
+      
         const person = persons.find(p => p.name === newName)
         const newPerson = person
         newPerson.number = newNumber
         personService.update(person.id, newPerson)
+        .catch(error => {
+          console.log('fail')
+          changeNotification(`Contact info of ${newName} was already deleted from server`)
+        })
         setNewName('')
         setNewNumber('')
-      }
+        changeNotification(`Updated the number of ${newName}`)
     }
   }
 
-
-
   const handleDeleteButtonPress = id => {
     const person = persons.find(p => p.id === id)
-    if (window.confirm(`Please confirm the removal of ${person.name} from the phonebook`)) {
       personService
         .deletePerson(person.id)
         .then(filter => {
           setPersons(persons.filter(p => p.id !== id))
         })
-    }
-
+        changeNotification(`Deleted ${person.name} from the phone book`)
   }
 
   const handlePersonChange = (event) => {
@@ -151,6 +172,8 @@ const App = () => {
     <div className="App">
       <header className="App-header">
         <h1>Phonebook</h1>
+
+        <Notification message={statusMessage} />
 
         <Filter setFilteredListBySearchTerm={setFilteredListBySearchTerm}
           searchTerm={searchTerm}
@@ -175,3 +198,40 @@ const App = () => {
 }
 
 export default App
+
+/*
+  const addPerson = (event) => {
+    event.preventDefault()
+    let nameFound = false
+
+    persons.forEach(function (el) {
+      if (el.name === newName) {
+        nameFound = true;
+      }
+    });
+
+    if (!nameFound) {
+      const personObject = {
+        name: newName,
+        number: newNumber
+      }
+
+      personService.create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          setNewName('')
+          setNewNumber('')
+        })
+        .catch(error => {
+          setErrorMessage(
+            // `Note '${note.content}' was already removed from server`
+            `Error 123 `
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+          // setNotes(persons.filter(p => p.id !== id))
+        })
+    }
+  }
+*/
