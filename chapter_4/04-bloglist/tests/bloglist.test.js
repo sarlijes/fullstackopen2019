@@ -101,9 +101,13 @@ describe('favourite blog (most votes)', () => {
 describe('which author has most blog posts', () => {
 
     test('when list one author with 3 posts', () => {
+        const expectedAuthor = {
+            author: "Robert C. Martin",
+            blogs: 3
+        }
         const result = listHelper.authorWithMostPosts(listWithSixBlogs)
-        // console.log(result)
-        // expect(result).toEqual(listWithSixBlogs[2]);
+        console.log(result)
+        expect(result).toEqual(expectedAuthor);
     })
 
 })
@@ -114,8 +118,8 @@ describe('which author has most likes on their blog posts', () => {
         likes: 17
     }
     test('when list has six authors with one author with 17 likes', () => {
-        // const result = listHelper.favouriteBlog(listWithSixBlogs)
-        // expect(result).toEqual(expectedAuthor);
+        const result = listHelper.authorWithMostLikes(listWithSixBlogs)
+        expect(result).toEqual(expectedAuthor);
     })
 
 })

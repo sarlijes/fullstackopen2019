@@ -1,4 +1,4 @@
-let _ = require('lodash');
+// let _ = require('lodash');
 
 const dummy = (blogs) => {
     return 1
@@ -24,37 +24,33 @@ const favouriteBlog = (blogs) => {
 
 const authorWithMostPosts = (blogs) => {
 
-    const reducer = (sum, item) => { return sum + item }
+    const author = {}
+    const count = {}
+    blogs.forEach(blog => {
+        if (!(blog.author in count))
+            count[blog.author] = 0
+        count[blog.author]++
+    })
 
-    const authors = _.groupBy(blogs, 'author')
-    console.log(authors.length)
-    // authors.forEach (el =>
-    //     console.log(el))
-    _.forEach(authors, function(el) {
-        // console.log(el.length);
-        // console.log(el.author);
-      });
-    return authors
+    author.author = Object.keys(count).reduce((best, author) => count[best] > count[author] ? best : author)
+    author.blogs = count[author.author]
 
+    return author
+
+}
+const authorWithMostLikes = (blogs) => {
+    const returnAuthor = {}
+    const likes = {}
+    blogs.forEach(blog => {
+        if (!(blog.author in likes))
+            likes[blog.author] = 0
+        likes[blog.author] = likes[blog.author] + blog.likes
+    })
+    returnAuthor.author = Object.keys(likes).reduce((best, author) => likes[best] > likes[author] ? best : author)
+    returnAuthor.likes = likes[returnAuthor.author]
+
+    return returnAuthor
 }
 module.exports = {
-    dummy, count, totalLikes, favouriteBlog, authorWithMostPosts
+    dummy, count, totalLikes, favouriteBlog, authorWithMostPosts, authorWithMostLikes
 }
-
-/*
-    // console.log('---- ', _.groupBy(authors.forEach))
-    // console.log(authors.forEach(el =>
-    //     console.log(el)))
-    _.forEach(authors, function (el) {
-        console.log(authors)
-        _.reduce(authors, function (sum, n) {
-            console.log("el nyt ---- ", el)
-            // return sum + el.length
-            // }, 0)
-            // )
-        })
-
-    }
-//    return authors
-}
-*/
