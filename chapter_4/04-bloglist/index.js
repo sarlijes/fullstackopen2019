@@ -1,3 +1,15 @@
+const app = require('./app') // varsinainen Express-sovellus
+const http = require('http')
+const config = require('./utils/config')
+
+const server = http.createServer(app)
+
+server.listen(config.PORT, () => {
+  console.log(`Server now running on port ${config.PORT}`)
+})
+
+
+/*
 require('dotenv').config()
 const http = require('http')
 const express = require('express')
@@ -45,3 +57,5 @@ const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+*/
