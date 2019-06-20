@@ -48,8 +48,12 @@ test('there are two blogs', async () => {
 
 test('the first blog is about React patterns ', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body[0].title).toBe('React patterns')
+})
+
+test('the blog post object has an id defined (instead if an "__id")', async () => {
+    const response = await api.get('/api/blogs')
+    expect(response.body.id).toBeDefined
 })
 
 afterAll(() => {
