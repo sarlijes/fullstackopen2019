@@ -66,31 +66,25 @@ test('adding one blog post increases the amount of posts', async () => {
     expect(response.body.length).toBe(helper.initialBlogs.length + 1)
     expect(titles).toContain('async/await simplifies making async calls')
 })
-/*
 
-      const blogsAtEnd = await helper.blogInDb()
-      expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
-
-      const contents = blogsAtEnd.map(b => b.content)
-      expect(contents).toContain('async/await simplifies making async calls')
-    })
-
-    test('fails with status code 400 if data invailid', async () => {
-      const newBlog = {
-        important: true
-      }
-
-      await api
+test('when adding one blog post without likes, the likes count is set to 0', async () => {
+    const newBlog =
+    {
+        title: 'Use describing blocks to ensure test result clarity',
+        author: "Jane Doe",
+        url: "https://www.fi"
+    }
+    await api
         .post('/api/blogs')
         .send(newBlog)
-        .expect(400)
+        .expect(200)
+        .expect('Content-Type', /application\/json/)
+        .expect(response => {
+            expect(response.body.likes).toBe(0)
+        })
 
-      const blogsAtEnd = await helper.blogsInDb()
+})
 
-      expect(blogsAtEnd.length).toBe(helper.initialBlogs.length)
-    })
-  })
-*/
 afterAll(() => {
     mongoose.connection.close()
 })
