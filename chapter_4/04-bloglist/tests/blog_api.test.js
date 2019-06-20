@@ -85,6 +85,33 @@ test('when adding one blog post without likes, the likes count is set to 0', asy
 
 })
 
+test('when adding one blog post without url, response is 400 Bad request', async () => {
+    const newBlog =
+    {
+        title: 'Let us write a few more tests',
+        author: "Jane Doe",
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+})
+test('when adding one blog post without title, response is 400 Bad request', async () => {
+    const newBlog =
+    {
+        author: "Jane Doe",
+        url: "https://www.fi"
+    }
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+})
+
+
+
 afterAll(() => {
     mongoose.connection.close()
 })
