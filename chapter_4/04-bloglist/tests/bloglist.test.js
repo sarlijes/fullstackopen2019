@@ -74,7 +74,6 @@ test('count returns 5', () => {
 })
 
 describe('total likes', () => {
-
     test('when list has only one blog equals the likes of that', () => {
         const result = listHelper.totalLikes(listWithOneBlog)
         expect(result).toBe(5)
@@ -90,26 +89,21 @@ describe('total likes', () => {
 })
 
 describe('favourite blog (most votes)', () => {
-
     test('when list has one blog post with 12 votes', () => {
         const result = listHelper.favouriteBlog(listWithSixBlogs)
         expect(result).toEqual(listWithSixBlogs[2]);
     })
-
 })
 
 describe('which author has most blog posts', () => {
-
     test('when list one author with 3 posts', () => {
         const expectedAuthor = {
             author: "Robert C. Martin",
             blogs: 3
         }
         const result = listHelper.authorWithMostPosts(listWithSixBlogs)
-        console.log(result)
         expect(result).toEqual(expectedAuthor);
     })
-
 })
 
 describe('which author has most likes on their blog posts', () => {
@@ -121,5 +115,4 @@ describe('which author has most likes on their blog posts', () => {
         const result = listHelper.authorWithMostLikes(listWithSixBlogs)
         expect(result).toEqual(expectedAuthor);
     })
-
 })
