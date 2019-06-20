@@ -97,6 +97,7 @@ test('when adding one blog post without url, response is 400 Bad request', async
         .expect(400)
         .expect('Content-Type', /application\/json/)
 })
+
 test('when adding one blog post without title, response is 400 Bad request', async () => {
     const newBlog =
     {
