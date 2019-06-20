@@ -131,6 +131,9 @@ const App = () => {
           setNewNumber('')
           changeNotification(`Added ${newName}`)
         })
+        .catch(error => {
+          changeNotification(`Adding failed: minimum length is 3 for name and 8 for the number`)
+        })
 
     } else {
       
@@ -139,7 +142,6 @@ const App = () => {
         newPerson.number = newNumber
         personService.update(person.id, newPerson)
         .catch(error => {
-          console.log('fail')
           changeNotification(`Contact info of ${newName} was already deleted from server`)
         })
         setNewName('')
