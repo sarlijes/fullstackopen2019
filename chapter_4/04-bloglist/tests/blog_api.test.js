@@ -82,7 +82,6 @@ describe('When adding blog posts', () => {
             .expect(response => {
                 expect(response.body.likes).toBe(0)
             })
-
     })
 
     describe('When post request body has invalid data', () => {
