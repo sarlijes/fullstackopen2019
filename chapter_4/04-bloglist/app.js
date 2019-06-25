@@ -2,10 +2,14 @@ const config = require('./utils/config')
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
+const middleware = require('./utils/middleware')
+
+app.use(middleware.tokenExtractor)
+
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
 const loginRouter = require('./controllers/login')
-const middleware = require('./utils/middleware')
+
 const mongoose = require('mongoose')
 
 console.log('connecting to', config.MONGODB_URI)
