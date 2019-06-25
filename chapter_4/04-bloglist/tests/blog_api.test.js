@@ -1,4 +1,5 @@
-// Run this test: npx jest tests/blog_api.test.js --runInBand
+// Run all tests: npm run test
+// Run only this test: npx jest tests/blog_api.test.js --runInBand
 
 const mongoose = require('mongoose')
 const supertest = require('supertest')
