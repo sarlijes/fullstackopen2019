@@ -12,6 +12,7 @@ const BlogForm = ({ newTitle, newAuthor, newUrl, createNewBlogPost, handleAuthor
       <div><label>URL: </label>
         <input type='text' name='newUrl' value={newUrl} onChange={handleUrlChange} />
       </div>
+      <div><small>please include the http:// in the URL</small></div>
       <button type='submit'>Confirm</button>
     </form>
   </div>
