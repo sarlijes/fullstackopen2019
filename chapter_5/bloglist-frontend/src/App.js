@@ -3,6 +3,7 @@ import "./App.css"
 import blogService from "./services/blogs"
 import loginService from "./services/loginService"
 import BlogForm from "./components/BlogForm"
+import Togglable from "./components/Togglable"
 
 const Bloglist = ({ blogs, handleDeleteButtonPress }) => {
   return (
@@ -125,33 +126,31 @@ const App = () => {
       })
   }
 
-  if (user === null) {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <h1>Blog post app</h1>
-        </header>
-        <div className="App-body">
-          <h2>Log in to application</h2>
-          <div><Notification message={notification} /></div>
+  // render() {
+  const login = () => (
+    <div className="App">
+      <header className="App-header">
+        <h1>Blog post app</h1>
+      </header>
+      <div className="App-body">
+        <h2>Log in to application</h2>
+        <div><Notification message={notification} /></div>
 
-          <form onSubmit={handleLogin}>
-            <div>username
+        <form onSubmit={handleLogin}>
+          <div>username
               <input type="text" value={username} name="Username" onChange={({ target }) => setUsername(target.value)}
-              />
-            </div>
-            <div>
-              password
+            />
+          </div>
+          <div>
+            password
               <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)}
-              />
-            </div><button type="submit">login</button>
-          </form>
-        </div>
+            />
+          </div><button type="submit">login</button>
+        </form>
       </div>
-    )
-  }
-
-  return (
+    </div>
+  )
+  const blogList = () => (
     <div className="App">
       <header className="App-header">
         <h1>Blog post app</h1>
@@ -161,19 +160,32 @@ const App = () => {
           <p>{user.name} logged in</p>
           <div><button onClick={handleLogout}>Log out</button></div>
           <div></div>
-          <BlogForm
-            createNewBlogPost={createNewBlogPost}
-            newAuthor={newAuthor} newTitle={newTitle}
-            newUrl={newUrl} handleTitleChange={handleTitleChange}
-            handleUrlChange={handleUrlChange}
-            handleAuthorChange={handleAuthorChange} />
-          <Notification message={notification} />
+
+          <Togglable buttonLabel='add new blog'
+            ref={component => this.noteForm = component} >
+            <BlogForm
+              createNewBlogPost={createNewBlogPost}
+              newAuthor={newAuthor} newTitle={newTitle}
+              newUrl={newUrl} handleTitleChange={handleTitleChange}
+              handleUrlChange={handleUrlChange}
+              handleAuthorChange={handleAuthorChange} />
+            <Notification message={notification} />
+          </Togglable>
+
+
         </div>
 
         <Bloglist blogs={blogs}
           handleDeleteButtonPress={handleDeleteButtonPress}
         />
       </div>
+    </div>
+  )
+  // }
+
+  return (
+    <div>
+      {user === null ? login() : blogList()}
     </div>
   )
 }
