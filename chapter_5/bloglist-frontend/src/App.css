@@ -32,6 +32,9 @@
   font-size: calc(10px + 2vmin);
   color: black;
 }
+a {
+  color: rgb(160, 53, 106);
+}
 
 .App-link {
   color: #61dafb;
