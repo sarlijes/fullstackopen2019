@@ -2,7 +2,6 @@ import React from "react"
 
 const BlogForm = ({ newTitle, newAuthor, newUrl, createNewBlogPost, handleAuthorChange, handleTitleChange, handleUrlChange }) => (
   <div>
-    <h2>Add new blog post</h2>
     <form onSubmit={createNewBlogPost}>
       <div><label>Title: </label>
         <input type='text' name='newTitle' value={newTitle} onChange={handleTitleChange} />
