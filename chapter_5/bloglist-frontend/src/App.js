@@ -4,17 +4,16 @@ import blogService from "./services/blogs"
 import loginService from "./services/loginService"
 import BlogForm from "./components/BlogForm"
 
-const Bloglist = ({ blogs }) => {
-  // console.log("blogs bloglistissa ", blogs)
+const Bloglist = ({ blogs, handleDeleteButtonPress }) => {
   return (
-    <>{blogs.map(blog => <Blog key={blog.id} blog={blog} />)}</>
+    <>{blogs.map(blog => <Blog key={blog.id} blog={blog} handleDeleteButtonPress={() => handleDeleteButtonPress(blog.id)} />)}</>
   )
 }
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleDeleteButtonPress }) => {
   return (
     <div>{blog.author}:
       <a href={blog.url}>{blog.title}</a>
-      {/* <button onClick={handleDeleteButtonPress}>delete</button> */}
+      <button onClick={handleDeleteButtonPress}>delete</button>
     </div>
   )
 }
@@ -99,25 +98,31 @@ const App = () => {
     setNewAuthor(event.target.value)
   }
 
+  const handleDeleteButtonPress = id => {
+    const blogToBeDeleted = blogs.find(b => b.id === id)
+    blogService
+      .deleteBlog(blogToBeDeleted.id, user)
+      .then(filter => {
+        setBlogs(blogs.filter(b => b.id !== id))
+      })
+    changeNotification(`Deleted ${blogToBeDeleted.title}`)
+  }
+
 
   const createNewBlogPost = (event) => {
-
     event.preventDefault()
-
     const blogObject = {
       title: newTitle,
       author: newAuthor,
       url: newUrl
     }
     changeNotification("Added " + newTitle + " by " + newAuthor)
-
     blogService
       .create(blogObject)
       .then(data => {
         setBlogs(blogs.concat(data))
         setNewBlog("")
       })
-
   }
 
   if (user === null) {
@@ -166,7 +171,7 @@ const App = () => {
         </div>
 
         <Bloglist blogs={blogs}
-        // handleDeleteButtonPress={handleDeleteButtonPress}
+          handleDeleteButtonPress={handleDeleteButtonPress}
         />
       </div>
     </div>
