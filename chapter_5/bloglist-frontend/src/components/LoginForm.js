@@ -7,7 +7,7 @@ const loginForm = ({ handleLogin, username, setUsername, password, setPassword }
         </div>
         <div>password
             <input type="password" value={password} name="Password" onChange={({ target }) => setPassword(target.value)} />
-        </div><button type="submit">login</button>
+        </div><button type="submit" className="login">login</button>
     </form>
 )
 
