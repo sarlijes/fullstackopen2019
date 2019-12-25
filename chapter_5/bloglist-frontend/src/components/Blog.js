@@ -13,7 +13,7 @@ const Blog = ({ blog, handleDeleteButtonPress, handleSelectBlogChange, handleLik
     const renderDetails = () => (
         <>
             <div>Posted by: {blog.user.name}</div>
-            <div>Likes: {blog.likes}</div>
+            <div className="likes">Likes: {blog.likes}</div>
             <button onClick={handleLike(blog)}>like</button>
         </>
     )
@@ -26,10 +26,10 @@ const Blog = ({ blog, handleDeleteButtonPress, handleSelectBlogChange, handleLik
 
     return (
         <div style={blogStyle}>
-            <div>
-                {blog.author}: &nbsp;
-                <a href={blog.url}>{blog.title}</a>
-            </div>
+
+            <div className="author">{blog.author}</div>
+            <div className="title"><a href={blog.url}>{blog.title}</a></div>
+
             {blog.showDetails === true ?
                 renderDetails() :
                 renderShowInfoButton()
