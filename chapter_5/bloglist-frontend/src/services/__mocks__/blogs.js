@@ -50,10 +50,10 @@ const blogs = [
         likes: 2,
         __v: 0
     }
-];
+]
 
 const getAll = () => {
-    return Promise.resolve(blogs);
-};
+    return Promise.resolve(blogs)
+}
 
-export default { getAll };
+export default { getAll }

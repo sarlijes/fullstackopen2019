@@ -19,19 +19,32 @@ describe("<App />", () => {
         expect(component.container).toHaveTextContent("username")
         expect(component.container).toHaveTextContent("password")
 
-        // await waitForElement(
-        //     () => component.container.querySelector(".blog")
-        // )
+    })
 
-        // const blogs = component.container.querySelectorAll(".blog")
-        // expect(blogs.length).toBe(2)
+    test("show blog list if logged in user", async () => {
 
-        // expect(component.container).toHaveTextContent(
-        //     "HTML is easy"
-        // )
-        // expect(component.container).toHaveTextContent(
-        //     "Browser can execute only javascript"
-        // )
+        const user = {
+            username: "tester",
+            token: "1231231214",
+            name: "Donald Tester"
+        }
+
+        localStorage.setItem("loggedBlogAppUser", JSON.stringify(user))
+
+        let component
+
+        component = render(
+            <App />
+        )
+        component.rerender(<App />)
+
+        await waitForElement(
+            () => component.getByText("new blog")
+        )
+
+        expect(component.container).toHaveTextContent(
+            "Donald Tester logged in"
+        )
     })
 })
 
