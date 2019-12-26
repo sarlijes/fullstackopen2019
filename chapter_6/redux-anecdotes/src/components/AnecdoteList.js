@@ -32,18 +32,19 @@ const AnecdoteList = ({ props }) => {
     )
 }
 
-const mapStateToProps = (store) => {
+const mapStateToProps = (state) => {
     console.log("mapStateToProps")
-    console.log(store.anecdotes)
+    console.log(state)
     return {
-        anecdotes: store.anecdotes,
-        filter: store.filter,
+        anecdotes: state.anecdotes,
+        filter: state.filter,
     }
 }
 
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    null
 )(AnecdoteList)
 
 //export default AnecdoteList
