@@ -9,13 +9,11 @@ const App = (props) => {
     marginBottom: 15
   }
   return (
-    
-    <div style={style}>
+    <div>
       <h1>Programming anecdotes</h1>
       <div style={style}>
         <AnecdoteForm />
       </div>
-
       <Filter />
       <AnecdoteList />
       <Notification />
