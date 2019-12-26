@@ -15,7 +15,7 @@ const App = (props) => {
       </div>
 
       <Filter store={props.store} />
-      <AnecdoteList store={props.store} />
+      <AnecdoteList />
       <Notification store={props.store} />
     </div>
   )
