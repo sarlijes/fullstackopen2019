@@ -2,15 +2,23 @@ import React from 'react'
 import AnecdoteList from './components/AnecdoteList'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-
+import Filter from './components/Filter'
 
 const App = (props) => {
-
+  const style = {
+    marginBottom: 15
+  }
   return (
-    <div>
-      <Notification store={props.store} />
-      <AnecdoteForm store={props.store} />
-      <AnecdoteList store={props.store} />
+    
+    <div style={style}>
+      <h1>Programming anecdotes</h1>
+      <div style={style}>
+        <AnecdoteForm />
+      </div>
+
+      <Filter />
+      <AnecdoteList />
+      <Notification />
     </div>
   )
 }

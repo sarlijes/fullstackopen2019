@@ -1,8 +1,13 @@
 import React from 'react'
 
 const Anecdote = ({ anecdote, handleClick }) => {
+  const style = {
+    marginBottom: 15
+  }
   return (
-    <li>
+    <li style={style}>
+      {anecdote.id}
+      {" : "}
       {anecdote.content}
       <button onClick={handleClick}>vote</button>
       {anecdote.votes}
