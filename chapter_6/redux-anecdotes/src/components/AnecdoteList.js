@@ -3,20 +3,24 @@ import Anecdote from './Anecdote'
 
 import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
 
+const compareVotes = (a, b) => b.votes - a.votes
+
 const AnecdoteList = ({ store }) => {
-  return (
-    <ul>
-      {store.getState().map(anecdote =>
-        <Anecdote
-          key={anecdote.id}
-          anecdote={anecdote}
-          handleClick={() =>
-            store.dispatch(voteAnecdoteWithId(anecdote.id))
-          }
-        />
-      )}
-    </ul>
-  )
+    return (
+        <ul>
+            {store.getState()
+                .sort(compareVotes)
+                .map(anecdote =>
+                    <Anecdote
+                        key={anecdote.id}
+                        anecdote={anecdote}
+                        handleClick={() =>
+                            store.dispatch(voteAnecdoteWithId(anecdote.id))
+                        }
+                    />
+                )}
+        </ul>
+    )
 }
 
 export default AnecdoteList
