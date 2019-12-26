@@ -19,10 +19,17 @@ const useField = (type) => {
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
-  // ...
+  useEffect(() => { (async () => {
+      const response = await axios.get(baseUrl)
+      setResources(response.data)
+    })()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const create = (resource) => {
-    // ...
+  const create = async resource => {
+    const response = await axios.post(baseUrl, resource)
+    setResources(resources.concat(response.data))
+    return response.data;
   }
 
   const service = {
@@ -32,7 +39,7 @@ const useResource = (baseUrl) => {
   return [
     resources, service
   ]
-}
+};
 
 const App = () => {
   const content = useField('text')
@@ -60,7 +67,6 @@ const App = () => {
         <button>create</button>
       </form>
       {notes.map(n => <p key={n.id}>{n.content}</p>)}
-
       <h2>persons</h2>
       <form onSubmit={handlePersonSubmit}>
         name <input {...name} /> <br/>

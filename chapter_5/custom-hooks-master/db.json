@@ -7,6 +7,10 @@
     {
       "content": "best feature ever <3",
       "id": 2
+    },
+    {
+      "content": "this is awesome",
+      "id": 3
     }
   ],
   "persons": [
@@ -14,6 +18,16 @@
       "name": "mluukkai",
       "number": "040-5483923",
       "id": 1
+    },
+    {
+      "name": "Jessi",
+      "number": "555",
+      "id": 2
+    },
+    {
+      "name": "Tiina",
+      "number": "6539981",
+      "id": 3
     }
   ]
 }
