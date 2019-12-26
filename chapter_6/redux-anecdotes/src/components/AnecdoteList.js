@@ -3,16 +3,12 @@ import { connect } from 'react-redux'
 
 import Anecdote from './Anecdote'
 
-// import { setFilter } from '../reducers/notificationReducer'
-// import { emptyFilter } from '../reducers/notificationReducer'
-
 import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
 
 const compareVotes = (a, b) => b.votes - a.votes
 
 const AnecdoteList = ( props ) => {
 
-    console.log(props)
     return (
         <ul>
             {props
@@ -33,11 +29,10 @@ const AnecdoteList = ( props ) => {
 }
 
 const mapStateToProps = (state) => {
-    console.log("mapStateToProps")
-    console.log(state)
     return {
         anecdotes: state.anecdotes,
         filter: state.filter,
+        notification: state.notification
     }
 }
 
