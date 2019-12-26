@@ -9,6 +9,7 @@ const AnecdoteList = ({ store }) => {
     return (
         <ul>
             {store.getState()
+                .anecdotes
                 .sort(compareVotes)
                 .map(anecdote =>
                     <Anecdote
