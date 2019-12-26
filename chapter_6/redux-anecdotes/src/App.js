@@ -1,10 +1,18 @@
 import React from 'react';
+import { createStore } from 'redux'
+import reducer from './reducers/anecdoteReducer'
+
 
 const App = (props) => {
   const anecdotes = props.store.getState()
 
+  const store = createStore(reducer)
+
   const vote = (id) => {
-    console.log('vote', id)
+    store.dispatch({
+      type: 'UPVOTE',
+      data: { id }
+    })
   }
 
   return (
@@ -31,3 +39,14 @@ const App = (props) => {
 }
 
 export default App
+/*
+  const createVoteAction = (id) => {
+    return {
+      type: 'UPVOTE',
+      data: { id }
+    }
+  }
+
+  const vote = (id) => () => {
+    store.dispatch(vote(id))
+  }*/
