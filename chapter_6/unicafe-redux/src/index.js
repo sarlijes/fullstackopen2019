@@ -36,7 +36,7 @@ const App = () => {
       <button onClick={ok}>neutraali</button>
       <button onClick={bad}>bad</button>
       <button onClick={zero}>nollaa tilastot</button>
-
+      <div>Tilastot</div>
       <div>hyvä {store.getState().good}</div>
       <div>neutraali {store.getState().ok}</div>
       <div>huono {store.getState().bad}</div>
@@ -51,7 +51,7 @@ const renderApp = () => {
 renderApp()
 store.subscribe(renderApp)
 
-store.subscribe(() => {
-  const storeNow = store.getState()
-  console.log(storeNow)
-})
+// store.subscribe(() => {
+//   const storeNow = store.getState()
+//   console.log(storeNow)
+// })
