@@ -6,6 +6,7 @@ import BlogForm from "./components/BlogForm"
 import LoginForm from "./components/LoginForm"
 import Togglable from "./components/Togglable"
 import Bloglist from "./components/Bloglist"
+import { useField } from "./hooks/index"
 
 const Notification = ({ message }) => {
     if (message === undefined) {
@@ -19,13 +20,14 @@ const Notification = ({ message }) => {
 const App = () => {
     const [blogs, setBlogs] = useState([])
     const [notification, setNotification] = useState()
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
     const [user, setUser] = useState(null)
     const [selectedBlog, setSelectedBlog] = useState(null)
     const [newAuthor, setNewAuthor] = useState("")
     const [newTitle, setNewTitle] = useState("")
     const [newUrl, setNewUrl] = useState("")
+
+    const username = useField("text")
+    const password = useField("password")
 
     const changeNotification = (message) => {
         setNotification(message)
@@ -53,15 +55,21 @@ const App = () => {
 
     const handleLogin = async (event) => {
         event.preventDefault()
+
+        const credentials = {
+            username: username.value,
+            password: password.value
+        }
+
         try {
-            const user = await loginService.login({ username, password })
+            const user = await loginService.login(credentials)
             window.localStorage.setItem(
                 "loggedBlogAppUser", JSON.stringify(user)
             )
             blogService.setToken(user.token)
             setUser(user)
-            setUsername("")
-            setPassword("")
+            // setUsername("")
+            // setPassword("")
         } catch (exception) {
             changeNotification("Wrong username or password")
         }
@@ -151,9 +159,10 @@ const App = () => {
             <div className="App-body">
                 <h2>Log in to application</h2>
                 <div><Notification message={notification} /></div>
-                <LoginForm
-                    handleLogin={handleLogin} username={username} setUsername={setUsername}
-                    password={password} setPassword={setPassword}
+                <LoginForm className="loginform"
+                    username={(username)}
+                    password={(password)}
+                    handleLogin={handleLogin}
                 />
             </div>
         </div>
