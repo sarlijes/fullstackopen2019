@@ -1,3 +1,21 @@
+import React from 'react'
+import AnecdoteList from './components/AnecdoteList'
+import NewAnecdote from './components/NewAnecdote'
+
+const App = (props) => {
+
+  return (
+    <div>
+      <NewAnecdote store={props.store} />
+      <AnecdoteList store={props.store} />
+    </div>
+  )
+}
+
+export default App
+
+
+/*
 import React from 'react';
 import { createStore } from 'redux'
 import reducer from './reducers/anecdoteReducer'
@@ -39,7 +57,7 @@ const App = (props) => {
 }
 
 export default App
-/*
+
   const createVoteAction = (id) => {
     return {
       type: 'UPVOTE',
