@@ -10,7 +10,7 @@ import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
 
 const compareVotes = (a, b) => b.votes - a.votes
 
-const AnecdoteList = ({ props }) => {
+const AnecdoteList = ( props ) => {
 
     console.log(props)
     return (
@@ -41,10 +41,6 @@ const mapStateToProps = (state) => {
     }
 }
 
+const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
 
-export default connect(
-    mapStateToProps,
-    null
-)(AnecdoteList)
-
-//export default AnecdoteList
+export default ConnectedAnecdoteList

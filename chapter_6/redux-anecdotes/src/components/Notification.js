@@ -8,7 +8,7 @@ const Notification = (props) => {
   }
   return (
     <div style={style}>
-      {props.store.getState().notification}
+      {/* {props.store.getState().notification} */}
     </div>
   )
 }
