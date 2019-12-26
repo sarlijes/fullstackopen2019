@@ -149,14 +149,20 @@ const App = () => {
                 <h2>Log in to application</h2>
                 <div><Notification message={notification} /></div>
                 <LoginForm className="loginform"
-                    username={(username)}
-                    password={(password)}
+                    username={skipReset(username)}
+                    password={skipReset(password)}
                     handleLogin={handleLogin}
                 />
             </div>
         </div>
     )
     const blogFormRef = React.createRef()
+
+    const skipReset = (hook) => {
+        // eslint-disable-next-line no-unused-vars
+        let { reset, ...hookWithoutAnyReset } = hook
+        return hookWithoutAnyReset
+    }
 
     const blogList = () => (
         <div className="App">
@@ -174,9 +180,12 @@ const App = () => {
                         <h4>Add new blog post</h4>
                         <BlogForm
                             createNewBlogPost={createNewBlogPost}
-                            newAuthor={newAuthor}
-                            newTitle={newTitle}
-                            newUrl={newUrl}
+                            newAuthor={skipReset(newAuthor)}
+                            newTitle={skipReset(newTitle)}
+                            newUrl={skipReset(newUrl)}
+                        // newAuthor={newAuthor}
+                        // newTitle={newTitle}
+                        // newUrl={newUrl}
                         />
                     </Togglable>
                 </div>
