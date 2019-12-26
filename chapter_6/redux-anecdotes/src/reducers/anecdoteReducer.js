@@ -1,3 +1,6 @@
+import { setNotification } from '../reducers/notificationReducer'
+import { emptyNotification } from '../reducers/notificationReducer'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -16,7 +19,14 @@ const asObject = (anecdote) => {
   }
 }
 
-export const voteAnecdoteWithId = (id) => {
+export const voteAnecdoteWithId = (id, store) => {
+
+  store.dispatch(setNotification(`you voted '${id}'`))
+  setTimeout(() => {
+    store.dispatch(emptyNotification())
+  }, 5000)
+
+
   return {
     type: 'UPVOTE',
     data: { id }
@@ -56,7 +66,7 @@ const reducer = (state = initialState, action) => {
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
       )
-      
+
 
     default:
       return state

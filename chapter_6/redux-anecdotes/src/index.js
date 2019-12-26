@@ -6,9 +6,6 @@ import App from './App'
 import anecdoteReducer from './reducers/anecdoteReducer'
 import notificationReducer from './reducers/notificationReducer'
 
-//import { setNotification } from './reducers/notificationReducer'
-
-
 const reducer = combineReducers({
   anecdotes: anecdoteReducer,
   notification: notificationReducer
@@ -16,8 +13,7 @@ const reducer = combineReducers({
 
 const store = createStore(reducer)
 
-store.subscribe(() => console.log(store.getState()))
-//store.dispatch(setNotification('IMPORTANT'))
+//store.subscribe(() => console.log(store.getState()))
 
 const renderApp = () => {
   ReactDOM.render(
