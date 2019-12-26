@@ -1,8 +1,6 @@
 import { setNotification } from '../reducers/notificationReducer'
 import { emptyNotification } from '../reducers/notificationReducer'
 
-const getId = () => (10000 * Math.random()).toFixed(0)
-
 export const voteAnecdoteWithId = (id, store) => {
 
   store.dispatch(setNotification(`you voted '${id}'`))
@@ -17,16 +15,13 @@ export const voteAnecdoteWithId = (id, store) => {
   }
 }
 
-export const createAnecdote = (content) => {
+export const createAnecdote = (data) => {
   return {
     type: 'NEW_ANECDOTE',
-    data: {
-      content,
-      id: getId(),
-      votes: 0
-    }
+    data
   }
 }
+
 
 const reducer = (state = [], action) => {
   // console.table('state now: ', state)

@@ -8,7 +8,7 @@ import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
 const compareVotes = (a, b) => b.votes - a.votes
 
 const AnecdoteList = ( props ) => {
-
+console.log(props.anecdotes)
     return (
         <ul>
             {props
