@@ -22,9 +22,10 @@ const App = () => {
     const [notification, setNotification] = useState()
     const [user, setUser] = useState(null)
     const [selectedBlog, setSelectedBlog] = useState(null)
-    const [newAuthor, setNewAuthor] = useState("")
-    const [newTitle, setNewTitle] = useState("")
-    const [newUrl, setNewUrl] = useState("")
+
+    const newAuthor = useField("text")
+    const newTitle = useField("text")
+    const newUrl = useField("text")
 
     const username = useField("text")
     const password = useField("password")
@@ -68,8 +69,8 @@ const App = () => {
             )
             blogService.setToken(user.token)
             setUser(user)
-            // setUsername("")
-            // setPassword("")
+            username.reset("")
+            password.reset("")
         } catch (exception) {
             changeNotification("Wrong username or password")
         }
@@ -79,18 +80,6 @@ const App = () => {
         event.preventDefault()
         blogService.removeToken()
         setUser(null)
-    }
-
-    const handleTitleChange = (event) => {
-        setNewTitle(event.target.value)
-    }
-
-    const handleUrlChange = (event) => {
-        setNewUrl(event.target.value)
-    }
-
-    const handleAuthorChange = (event) => {
-        setNewAuthor(event.target.value)
     }
 
     const handleDeleteButtonPress = (id) => async () => {
@@ -134,19 +123,19 @@ const App = () => {
     const createNewBlogPost = (event) => {
         event.preventDefault()
         const blogObject = {
-            title: newTitle,
-            author: newAuthor,
-            url: newUrl,
+            title: newTitle.value,
+            author: newAuthor.value,
+            url: newUrl.value,
             user: user
         }
-        changeNotification("Added " + newTitle + " by " + newAuthor)
+        changeNotification("Added " + newTitle.value + " by " + newAuthor.value)
         blogService
             .create(blogObject)
             .then(data => {
                 setBlogs(blogs.concat(data))
-                setNewTitle("")
-                setNewAuthor("")
-                setNewUrl("")
+                newAuthor.reset("")
+                newTitle.reset("")
+                newUrl.reset("")
             })
     }
 
@@ -182,13 +171,13 @@ const App = () => {
                     <Notification message={notification} />
                     <Togglable buttonLabel='new blog' ref={blogFormRef} >
                         {/* <Togglable buttonLabel='add new blog' ref={BlogForm} > */}
-                        <h2>Add new blog post</h2>
+                        <h4>Add new blog post</h4>
                         <BlogForm
                             createNewBlogPost={createNewBlogPost}
-                            newAuthor={newAuthor} newTitle={newTitle}
-                            newUrl={newUrl} handleTitleChange={handleTitleChange}
-                            handleUrlChange={handleUrlChange}
-                            handleAuthorChange={handleAuthorChange} />
+                            newAuthor={newAuthor}
+                            newTitle={newTitle}
+                            newUrl={newUrl}
+                        />
                     </Togglable>
                 </div>
                 <Bloglist blogs={blogs}

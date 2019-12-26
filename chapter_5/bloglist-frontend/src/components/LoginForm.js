@@ -7,8 +7,10 @@ const LoginForm = ({ handleLogin, username, password }) => (
         </div>
         <div>password
             <input {...password} />
-        </div><button type="submit" className="login">login</button>
+        </div>
+        <button type="submit" className="login">login</button>
     </form>
+
 )
 
 export default LoginForm

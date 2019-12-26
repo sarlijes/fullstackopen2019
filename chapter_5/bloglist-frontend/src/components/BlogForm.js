@@ -1,16 +1,16 @@
 import React from "react"
 
-const BlogForm = ({ newTitle, newAuthor, newUrl, createNewBlogPost, handleAuthorChange, handleTitleChange, handleUrlChange }) => (
+const BlogForm = ({ newTitle, newAuthor, newUrl, createNewBlogPost }) => (
     <div>
         <form onSubmit={createNewBlogPost}>
             <div><label>Title: </label>
-                <input type='text' name='newTitle' value={newTitle} onChange={handleTitleChange} />
+                <input {...newTitle} />
             </div>
             <div><label>Author:</label>
-                <input type='text' name='newAuthor' value={newAuthor} onChange={handleAuthorChange} />
+                <input {...newAuthor} />
             </div>
             <div><label>URL: </label>
-                <input type='text' name='newUrl' value={newUrl} onChange={handleUrlChange} />
+                <input {...newUrl} />
             </div>
             <div><small>please include the http:// in the URL</small></div>
             <button type='submit'>Confirm</button>
