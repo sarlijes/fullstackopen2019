@@ -1,21 +1,22 @@
+export const setNotification = (text, timeout) => {
+    return async dispatch => {
+        dispatch({
+            type: 'NOTIFY',
+            data: text
+        })
 
-export const setNotification = (text) => {
-    return { type: "NOTIFY", data: { text } }
-}
-
-export const emptyNotification = () => {
-    return { type: "EMPTY" }
+        setTimeout(() => {
+            dispatch({ type: 'EMPTY' })
+        }, timeout * 1000)
+    }
 }
 
 const notificationReducer = (state = "", action) => {
-    // console.log("state ", state)
-    //console.log("action.data >>", action.data)
-
     switch (action.type) {
         case "EMPTY":
             return ""
         case "NOTIFY":
-            return action.data.text
+            return action.data
         default:
             return state
     }

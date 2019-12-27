@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import Anecdote from './Anecdote'
 
 import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const compareVotes = (a, b) => b.votes - a.votes
 
 const AnecdoteList = ( props ) => {
-console.log(props.anecdotes)
+
     return (
         <ul>
             {props
@@ -39,3 +40,4 @@ const mapStateToProps = (state) => {
 const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
 
 export default ConnectedAnecdoteList
+

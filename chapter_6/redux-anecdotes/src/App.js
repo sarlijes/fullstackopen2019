@@ -11,10 +11,9 @@ import { initializeAnecdotes }  from './reducers/anecdoteReducer'
 const App = (props) => {
 
   useEffect(() => {
-    anecdoteService
-      .getAll().then(anecdotes => props.initializeAnecdotes(anecdotes))
+    props.initializeAnecdotes()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  },[])
 
   const style = {
     marginBottom: 15

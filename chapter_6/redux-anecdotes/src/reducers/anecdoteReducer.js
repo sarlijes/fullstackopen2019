@@ -1,27 +1,36 @@
-import { setNotification } from '../reducers/notificationReducer'
-import { emptyNotification } from '../reducers/notificationReducer'
-
-export const voteAnecdoteWithId = (id, store) => {
-
-  store.dispatch(setNotification(`you voted '${id}'`))
-  setTimeout(() => {
-    store.dispatch(emptyNotification())
-  }, 5000)
 
 
-  return {
-    type: 'UPVOTE',
-    data: { id }
+import anecdoteService from '../services/anecdotes'
+
+export const voteAnecdoteWithId = (id, props) => {
+  return async dispatch => {
+    const anecdoteToUpdate = await anecdoteService.getById(id)
+    const upvotedAnecdote = { ...anecdoteToUpdate, votes: anecdoteToUpdate.votes + 1 }
+
+    props.setNotification(`you voted '${anecdoteToUpdate.content}'`, 3)
+
+    const response = await anecdoteService.update(id, upvotedAnecdote)
+    dispatch({
+      type: 'UPVOTE',
+      data: { response }
+    })
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    })
   }
 }
 
-export const createAnecdote = (data) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data
+export const createAnecdote = content => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: newAnecdote,
+    })
   }
 }
-
 
 const reducer = (state = [], action) => {
   // console.table('state now: ', state)
@@ -37,26 +46,26 @@ const reducer = (state = [], action) => {
 
     case 'UPVOTE':
       const id = action.data.id
-      const anecdoteToChange = state.find(a => a.id === id)
+      const anecdoteToChange = anecdoteService.getById(action.data.response.id)
       const changedAnecdote = {
         ...anecdoteToChange,
         votes: anecdoteToChange.votes + 1
       }
-
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : changedAnecdote
       )
-
-
     default:
       return state
   }
 }
 
-export const initializeAnecdotes = (anecdotes) => {
-  return {
-    type: 'INIT_ANECDOTES',
-    data: anecdotes,
+export const initializeAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'INIT_ANECDOTES',
+      data: anecdotes,
+    })
   }
 }
 
