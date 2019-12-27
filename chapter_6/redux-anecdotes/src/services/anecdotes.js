@@ -13,7 +13,7 @@ const update = async (id, content) => {
 }
 
 const createNew = async (content) => {
-  const object =  {
+  const object = {
     content: content,
     votes: 0
   }

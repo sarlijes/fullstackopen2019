@@ -1,14 +1,10 @@
-
-
 import anecdoteService from '../services/anecdotes'
 
 export const voteAnecdoteWithId = (id, props) => {
+
   return async dispatch => {
     const anecdoteToUpdate = await anecdoteService.getById(id)
     const upvotedAnecdote = { ...anecdoteToUpdate, votes: anecdoteToUpdate.votes + 1 }
-
-    props.setNotification(`you voted '${anecdoteToUpdate.content}'`, 3)
-
     const response = await anecdoteService.update(id, upvotedAnecdote)
     dispatch({
       type: 'UPVOTE',

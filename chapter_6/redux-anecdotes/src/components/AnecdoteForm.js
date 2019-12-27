@@ -1,12 +1,9 @@
 import React from 'react'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
-import { emptyNotification } from '../reducers/notificationReducer'
 import { connect } from 'react-redux'
 
 const AnecdoteForm = (props) => {
-
-    console.log(props)
 
     const addAnecdote = async (event) => {
         event.preventDefault()

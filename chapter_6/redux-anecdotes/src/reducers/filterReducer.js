@@ -1,4 +1,4 @@
-export const setFilter = (value ) => {
+export const setFilter = (value) => {
     return { type: "FILTER", data: { value } }
 }
 
