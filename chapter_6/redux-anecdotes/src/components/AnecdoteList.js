@@ -1,13 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-
 import Anecdote from './Anecdote'
-
 import { voteAnecdoteWithId } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 const compareVotes = (a, b) => b.votes - a.votes
 
-const AnecdoteList = ( props ) => {
+const AnecdoteList = (props) => {
+
+    const upvote = (id) => {
+        props.voteAnecdoteWithId(id)
+        const anecdote = props.anecdotes.find(anecdote => anecdote.id === id)
+        props.setNotification(`you voted '${anecdote.content}'`, 3)
+    }
 
     return (
         <ul>
@@ -20,7 +25,7 @@ const AnecdoteList = ( props ) => {
                         key={anecdote.id}
                         anecdote={anecdote}
                         handleClick={() =>
-                            props.dispatch(voteAnecdoteWithId(anecdote.id, props))
+                            upvote(anecdote.id)
                         }
                     />
                 )}
@@ -36,6 +41,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-const ConnectedAnecdoteList = connect(mapStateToProps)(AnecdoteList)
+const ConnectedAnecdoteList = connect(mapStateToProps, { voteAnecdoteWithId, setNotification })(AnecdoteList)
 
 export default ConnectedAnecdoteList

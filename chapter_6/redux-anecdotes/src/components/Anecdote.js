@@ -6,6 +6,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
   }
   return (
     <li style={style}>
+      {"id: "}
       {anecdote.id}
       {" : "}
       {anecdote.content}
